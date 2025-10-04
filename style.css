@@ -1,0 +1,463 @@
+/* Reset and Base Styles
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+: #f0f0f0; 
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Inputs */
+/* input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* Button */
+/* button { */
+  /* width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px; */
+  /* transition: background-color 0.3s ease; */
+/* } */
+
+/* button:hover {
+  background-color: #218838;
+} */
+
+/* Table */
+/* table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+} */
+
+/* th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+} */
+
+/* th {
+  background-color: #f0f0body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Light mode background */
+  /* background-color: #f4f4f4; 
+  padding: 20px;
+  transition: background-color 0.3s, color 0.3s; Smooth transition */
+/* } */ 
+/* body.dark-mode {
+  /* Dark mode background */
+  /* background-color: #121212; 
+  color: #e0e0e0; /* Light text for dark mode */
+/* }  */
+
+/* Container */
+/* .container {
+  max-width: 600px;
+  margin: auto;
+  /* Light mode container background */
+  /* background-color: #ffffff; 
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+/* } */
+
+/* Header */
+/* h2 {
+  text-align: center;
+  /* Light mode text color */
+  /* color: #333; 
+  margin-bottom: 20px;
+  transition: color 0.3s;
+} */
+/* TABLE HEADER (Light Mode Default) */
+/* th { */
+  /* Light mode header background */
+  /* background-colorf0;
+  color: #333;
+} */
+
+/* Total Section */
+/* .total {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  color: #333;
+} */
+
+
+/* Reset and Base Styles */
+/* * { */
+  /* box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+} */
+
+/* BASE BODY STYLES (Light Mode Default) */
+/* body { */
+  /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4; Light mode background */
+  /* padding: 20px; */
+  /* Smooth transition for theme change */
+  /* transition: background-color 0.3s, color 0.3s;  */
+/* } */
+
+/* Container */
+/* .container {
+  max-width: 600px;
+  margin: auto;
+  background-color: #ffffff; Light mode container background */
+  /* padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); */
+  /* Smooth transition for theme change */
+  /* transition: background-color 0.3s, box-shadow 0.3s; */
+/* } */
+
+/* Header */
+/* h2 { */
+  /* text-align: center;
+  color: #333; Light mode text color */
+  /* margin-bottom: 20px;
+  transition: color 0.3s;
+} */
+
+/* Toggle Button Style */
+/* #themeToggle {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff; /* Blue for the toggle button */
+  /* color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer; */
+  /* marg */
+/* in-top: 10px;
+  margin-bottom: 20px; Space below the toggle */
+  /* transition: background-color 0.3s ease; */
+/* } */
+/* #themeToggle:hover {
+  background-color: #0056b3;
+} */
+
+/* Inputs */
+/* input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+} */
+/* input[type="text"],
+input[type="number"],
+input[type="date"] { /* ADD THIS */
+  /* width: 100%;
+  padding: 12px; */ 
+  /* ... rest of the input styles ... */
+  /* transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+} */
+
+/* Button (Add Expense) */
+/* button:not(#themeToggle) {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+} */
+
+/* button:not(#themeToggle):hover {
+  background-color: #218838;
+} */
+
+/* Table */
+/* table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+} */
+
+/* th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+} */
+
+/* Table Header (Light Mode Default) */
+/* th { */
+  /* background-color: #f0f0f0; 
+  color: #333;
+  transition: background-color 0.3s, color 0.3s; */
+/* } */
+
+/* Total Section */
+/* .total {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  color: #333; /* Light mode total color */
+  /* transition: color 0.3s; */
+/* } */
+
+
+/* -------------------------------------- */
+/* DARK MODE STYLES              */
+/* -------------------------------------- */
+
+/* Apply this class to the <body> element */
+/* .dark-mode { */
+  /* background-color: #121212; Dark background */
+  /* color: #e0e0e0; Light text color for the body */
+/* } */
+
+/* .dark-mode .container { */
+  /* background-color: #1e1e1e; Slightly lighter dark for container */
+  /* box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); */
+/* } */
+
+/* .dark-mode h2 { */
+  /* color: #ffffff; White text for header */
+/* } */
+
+/* .dark-mode input[type="text"],
+.dark-mode input[type="number"] {
+  background-color: #2c2c2c; /* Dark input background */
+  /* color: #e0e0e0; /* Light input text */
+  /* border: 1px solid #555; */
+/* } */
+/* .dark-mode input[type="text"],
+.dark-mode input[type="number"],
+.dark-mode input[type="date"] { /* ADD THIS */
+  /* background-color: #2c2c2c; /* Dark input background */
+  /* color: 1px solir: #e0e0e0; /* Light input text */
+  /* borded #555; */
+
+/* .dark-mode th {
+  background-color: #333333; /* Dark table header background */
+  /* color: #ffffff; /* White text for table header */
+  /* border-color: #444; */
+/* } */ 
+
+/* .dark-mode td {
+  border: 1px solid #444; /* Darker borders for cells */
+/* }  */
+
+/* .dark-mode .total {
+  color: #ffffff; /* White text for total */
+/* }  */ 
+
+/* Reset and Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* BASE BODY STYLES (Light Mode Default) */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4; /* Light mode background */
+  padding: 20px;
+  /* Smooth transition for theme change */
+  transition: background-color 0.3s, color 0.3s; 
+}
+
+/* Container */
+.container {
+  max-width: 600px;
+  margin: auto;
+  background-color: #ffffff; /* Light mode container background */
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  /* Smooth transition for theme change */
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Header */
+h2 {
+  text-align: center;
+  color: #333; /* Light mode text color */
+  margin-bottom: 20px;
+  transition: color 0.3s;
+}
+
+/* Toggle Button Style */
+#themeToggle {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff; /* Blue for the toggle button */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 20px; /* Space below the toggle */
+  transition: background-color 0.3s ease;
+}
+
+#themeToggle:hover {
+  background-color: #0056b3;
+}
+
+/* Inputs (Fixed to include text, number, and date) */
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* Button (Add Expense) */
+button:not(#themeToggle) {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:not(#themeToggle):hover {
+  background-color: #218838;
+}
+
+/* Delete Button Style (NEW) */
+.delete-btn {
+  background-color: #dc3545; /* Red color */
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto; /* Override 100% width from general button styles */
+  margin: 0;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+/* Table */
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Table Header (Light Mode Default) */
+th {
+  background-color: #f0f0f0; 
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Total Section */
+.total {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  color: #333; /* Light mode total color */
+  transition: color 0.3s;
+}
+
+
+/* -------------------------------------- */
+/* DARK MODE STYLES              */
+/* -------------------------------------- */
+
+/* Apply this class to the <body> element */
+.dark-mode {
+  background-color: #121212; /* Dark background */
+  color: #e0e0e0; /* Light text color for the body */
+}
+
+.dark-mode .container {
+  background-color: #1e1e1e; /* Slightly lighter dark for container */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode h2 {
+  color: #ffffff; /* White text for header */
+}
+
+/* Dark Mode Inputs (Fixed to include date) */
+.dark-mode input[type="text"],
+.dark-mode input[type="number"],
+.dark-mode input[type="date"] {
+  background-color: #2c2c2c; /* Dark input background */
+  color: #e0e0e0; /* Light input text */
+  border: 1px solid #555;
+}
+
+/* Dark Mode Delete Button Style (NEW) */
+.dark-mode .delete-btn {
+  background-color: #990000;
+}
+
+.dark-mode .delete-btn:hover {
+  background-color: #cc0000;
+}
+
+.dark-mode th {
+  background-color: #333333; /* Dark table header background */
+  color: #ffffff; /* White text for table header */
+  border-color: #444;
+}
+
+.dark-mode td {
+  border: 1px solid #444; /* Darker borders for cells */
+}
+
+.dark-mode .total {
+  color: #ffffff; /* White text for total */
+}

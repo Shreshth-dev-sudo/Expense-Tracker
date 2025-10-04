@@ -1,0 +1,612 @@
+<!-- <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker</title>
+  
+    <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+  <div class="container">
+    <h2>Your Personalized Expense Tracker</h2> 
+    
+        <div id="welcome-banner">
+        <p>This is your full-stack expense management system. Track spending and manage your finances with ease.</p>
+    </div>
+    
+    <button id="themeToggle">Toggle Dark Mode</button>
+
+        <input type="date" id="date" /> 
+    <input type="text" id="desc" placeholder="Description" />
+    <input type="number" id="amount" placeholder="Amount" />
+    <button onclick="addExpense()">Add Expense</button> 
+    
+    <table id="expenseTable">
+      <thead>
+        <tr>
+          <th>Date</th> 
+          <th>Description</th>
+          <th>Amount ($)</th>
+          <th>Action</th>         </tr>
+      </thead>
+      <tbody>
+              </tbody>
+    </table>
+
+    <div class="total">Total: $<span id="totalAmount">0.00</span></div>
+  </div>
+
+  <script>
+    // --- API & RENDERING LOGIC ---
+    const API_URL = 'http://localhost:3000/api/expenses';
+
+    document.addEventListener('DOMContentLoaded', fetchExpenses);
+
+    // --- DELETE FUNCTION ---
+    async function deleteExpense(id) {
+        if (!confirm('Are you sure you want to delete this expense?')) {
+            return;
+        }
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE' // Sends DELETE request
+            });
+
+            if (response.ok) {
+                fetchExpenses(); 
+            } else {
+                alert('Failed to delete expense on the server.');
+            }
+        } catch (error) {
+            console.error('Error deleting expense:', error);
+            alert('Could not connect to the backend to delete data.');
+        }
+    }
+    // -------------------------
+
+    // 1. Fetches data from the backend and calls renderExpenses
+    async function fetchExpenses() {
+        try {
+            const response = await fetch(API_URL);
+            const expenses = await response.json();
+            renderExpenses(expenses);
+        } catch (error) {
+            console.error('Error fetching expenses:', error);
+            // Display expenses from the server
+        }
+    }
+
+    // 2. Renders expenses and calculates the total
+    function renderExpenses(expenses) {
+        const tableBody = document.getElementById("expenseTable").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = ''; 
+        let total = 0;
+
+        expenses.forEach(expense => {
+            const amount = parseFloat(expense.amount);
+            
+            const newRow = tableBody.insertRow();
+            const dateCell = newRow.insertCell(0);
+            const descCell = newRow.insertCell(1);
+            const amountCell = newRow.insertCell(2);
+            const actionCell = newRow.insertCell(3); // Action Cell
+
+            dateCell.textContent = expense.date;
+            descCell.textContent = expense.desc;
+            amountCell.textContent = amount.toFixed(2);
+
+            // Create and append the delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'delete-btn'; 
+            deleteBtn.onclick = () => deleteExpense(expense.id); // Call delete function with ID
+            actionCell.appendChild(deleteBtn);
+
+            total += amount;
+        });
+
+        document.getElementById("totalAmount").textContent = total.toFixed(2);
+    }
+
+    // 3. Handles adding a new expense (sends data to the backend)
+    async function addExpense() {
+        const dateInput = document.getElementById("date");
+        const descInput = document.getElementById("desc");
+        const amountInput = document.getElementById("amount");
+
+        const date = dateInput.value.trim();
+        const desc = descInput.value.trim();
+        const amount = parseFloat(amountInput.value);
+
+        if (!date || !desc || isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid date, description, and amount.");
+            return;
+        }
+
+        const newExpense = { date, desc, amount };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newExpense)
+            });
+
+            if (response.ok) {
+                fetchExpenses(); 
+                
+                // Clear inputs
+                dateInput.value = "";
+                descInput.value = "";
+                amountInput.value = "";
+            } else {
+                alert('Failed to save expense on the server.');
+            }
+        } catch (error) {
+            console.error('Error adding expense:', error);
+            alert('Could not connect to the backend to save data.');
+        }
+    }
+
+
+    // --- DARK MODE TOGGLE LOGIC ---
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    themeToggle.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+    });
+</script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker</title>
+  
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+  <div class="container">
+    <h2>Your Personalized Expense Tracker</h2> 
+    
+    <div id="welcome-banner">
+        <p>This is your full-stack expense management system. Track spending and manage your finances with ease.</p>
+    </div>
+    
+    <button id="themeToggle">Toggle Dark Mode</button>
+
+    <input type="date" id="date" /> 
+    <input type="text" id="desc" placeholder="Description" />
+    <input type="number" id="amount" placeholder="Amount" />
+    <button onclick="addExpense()">Add Expense</button> 
+    
+    <table id="expenseTable">
+      <thead>
+        <tr>
+          <th>Date</th> 
+          <th>Description</th>
+          <th>Amount ($)</th>
+          <th>Action</th> 
+        </tr>
+      </thead>
+      <tbody>
+              </tbody>
+    </table>
+
+    <div class="budget-info">
+        <div>Budget: $<span id="currentBudget">0.00</span></div>
+        <div>Remaining: $<span id="remainingBudget">0.00</span></div>
+    </div>
+
+    <div class="total">Total Spent: $<span id="totalAmount">0.00</span></div>
+    
+    <button id="setBudgetBtn" onclick="setBudget()">Set Budget</button>   </div>
+
+  <script> -->
+<!--     // --- API & RENDERING LOGIC ---
+    const API_URL = 'http://localhost:3000/api/expenses';
+    const BUDGET_API_URL = 'http://localhost:3000/api/budget'; // NEW CONSTANT
+
+    document.addEventListener('DOMContentLoaded', fetchExpenses);
+
+    // --- NEW BUDGET FUNCTION ---
+    async function setBudget() {
+        const currentBudgetElement = document.getElementById("currentBudget");
+        const newLimit = prompt(`Enter your new budget limit (Current: $${currentBudgetElement.textContent}):`);
+
+        if (newLimit === null || newLimit.trim() === "") return;
+        
+        const limitAmount = parseFloat(newLimit);
+
+        if (isNaN(limitAmount) || limitAmount < 0) {
+            alert("Please enter a valid positive number for the budget.");
+            return;
+        }
+        
+        try {
+            const response = await fetch(BUDGET_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ limit: limitAmount })
+            }); -->
+
+            <!-- if (response.ok) {
+                fetchExpenses(); // Re-fetch to update display
+            } else {
+                alert('Failed to save budget limit on the server.');
+            }
+
+        } catch (error) {
+            console.error('Error setting budget:', error);
+            alert('Could not connect to the backend to save budget.');
+        }
+    }
+    // -------------------------
+
+    // --- DELETE FUNCTION ---
+    async function deleteExpense(id) {
+        if (!confirm('Are you sure you want to delete this expense?')) {
+            return;
+        }
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                fetchExpenses(); 
+            } else {
+                alert('Failed to delete expense on the server.');
+            }
+        } catch (error) {
+            console.error('Error deleting expense:', error);
+        }
+    } -->
+
+<!--     // 1. Fetches data (MODIFIED to fetch both expenses and budget)
+    async function fetchExpenses() { -->
+        <!-- let budgetLimit = 0;
+        try {
+            const [expensesResponse, budgetResponse] = await Promise.all([
+                fetch(API_URL),
+                fetch(BUDGET_API_URL) // Fetch budget
+            ]);
+            
+            const expenses = await expensesResponse.json();
+            const budgetData = await budgetResponse.json();
+
+            budgetLimit = parseFloat(budgetData.limit) || 0;
+            
+            renderExpenses(expenses, budgetLimit);
+
+        } catch (error) {
+            console.error('Error fetching data:', error); -->
+<!--         }
+    } -->
+
+<!--     // 2. Renders expenses (MODIFIED to calculate remaining budget)
+    function renderExpenses(expenses, budgetLimit) {
+        const tableBody = document.getElementById("expenseTable").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = ''; 
+        let totalSpent = 0; // Renamed from 'total'
+
+        expenses.forEach(expense => {
+            const amount = parseFloat(expense.amount);
+            
+            const newRow = tableBody.insertRow();
+            const dateCell = newRow.insertCell(0);
+            const descCell = newRow.insertCell(1);
+            const amountCell = newRow.insertCell(2);
+            const actionCell = newRow.insertCell(3);
+
+            dateCell.textContent = expense.date;
+            descCell.textContent = expense.desc;
+            amountCell.textContent = amount.toFixed(2);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'delete-btn'; 
+            deleteBtn.onclick = () => deleteExpense(expense.id);
+            actionCell.appendChild(deleteBtn);
+
+            totalSpent += amount;
+        }); -->
+
+<!--         // Update the total spent
+        document.getElementById("totalAmount").textContent = totalSpent.toFixed(2);
+        
+        // NEW: Update Budget Display
+        const remaining = budgetLimit - totalSpent;
+        
+        document.getElementById("currentBudget").textContent = budgetLimit.toFixed(2);
+        document.getElementById("remainingBudget").textContent = remaining.toFixed(2);
+        
+        // Optional: Highlight if over budget
+        const remainingEl = document.getElementById("remainingBudget");
+        remainingEl.style.color = remaining < 0 ? '#dc3545' : '#28a745'; 
+    }
+
+    // 3. Handles adding a new expense (sends data to the backend)
+    // NOTE: This function no longer needs to be fully updated as it just calls fetchExpenses()
+    async function addExpense() {
+        const dateInput = document.getElementById("date");
+        const descInput = document.getElementById("desc");
+        const amountInput = document.getElementById("amount");
+
+        const date = dateInput.value.trim();
+        const desc = descInput.value.trim();
+        const amount = parseFloat(amountInput.value);
+
+        if (!date || !desc || isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid date, description, and amount.");
+            return;
+        }
+
+        const newExpense = { date, desc, amount };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newExpense)
+            });
+
+            if (response.ok) {
+                fetchExpenses(); 
+                
+                // Clear inputs
+                dateInput.value = "";
+                descInput.value = "";
+                amountInput.value = "";
+            } else {
+                alert('Failed to save expense on the server.');
+            }
+        } catch (error) {
+            console.error('Error adding expense:', error);
+            alert('Could not connect to the backend to save data.');
+        }
+    }
+
+
+    // --- DARK MODE TOGGLE LOGIC ---
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    themeToggle.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+    });
+  </script>
+</body>
+</html> --> 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker</title>
+  
+    <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+  <div class="container">
+    <h2>Your Personalized Expense Tracker</h2> 
+    
+    <div id="welcome-banner">
+        <p>This is your full-stack expense management system. Track spending and manage your finances with ease.</p>
+    </div>
+    
+    <button id="themeToggle">Toggle Dark Mode</button>
+
+        <input type="date" id="date" /> 
+    <input type="text" id="desc" placeholder="Description" />
+    <input type="number" id="amount" placeholder="Amount" />
+    <button onclick="addExpense()">Add Expense</button> 
+    
+    <table id="expenseTable">
+      <thead>
+        <tr>
+          <th>Date</th> 
+          <th>Description</th>
+          <th>Amount ($)</th>
+          <th>Action</th>         </tr>
+      </thead>
+      <tbody>
+              </tbody>
+    </table>
+
+        <div class="budget-info">
+        <div>Budget: $<span id="currentBudget">0.00</span></div>
+        <div>Remaining: $<span id="remainingBudget">0.00</span></div>
+    </div>
+    
+    <div class="total">Total Spent: $<span id="totalAmount">0.00</span></div>
+    
+        <button id="setBudgetBtn" onclick="setBudget()">Set Budget</button> 
+  </div>
+
+  <script>
+    // --- API & RENDERING LOGIC ---
+    const API_URL = 'http://localhost:3000/api/expenses';
+    const BUDGET_API_URL = 'http://localhost:3000/api/budget'; 
+
+    document.addEventListener('DOMContentLoaded', fetchExpenses);
+
+    // --- NEW BUDGET FUNCTION (Invoked by the Set Budget button) ---
+    async function setBudget() {
+        const currentBudgetElement = document.getElementById("currentBudget");
+        const newLimit = prompt(`Enter your new budget limit (Current: $${currentBudgetElement.textContent}):`);
+
+        if (newLimit === null || newLimit.trim() === "") return;
+        
+        const limitAmount = parseFloat(newLimit);
+
+        if (isNaN(limitAmount) || limitAmount < 0) {
+            alert("Please enter a valid positive number for the budget.");
+            return;
+        }
+        
+        try {
+            const response = await fetch(BUDGET_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ limit: limitAmount })
+            });
+
+            if (response.ok) {
+                fetchExpenses(); // Re-fetch to update display
+            } else {
+                alert('Failed to save budget limit on the server.');
+            }
+
+        } catch (error) {
+            console.error('Error setting budget:', error);
+            alert('Could not connect to the backend to save budget.');
+        }
+    }
+    // -------------------------
+
+    // --- DELETE FUNCTION ---
+    async function deleteExpense(id) {
+        if (!confirm('Are you sure you want to delete this expense?')) {
+            return;
+        }
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                fetchExpenses(); 
+            } else {
+                alert('Failed to delete expense on the server.');
+            }
+        } catch (error) {
+            console.error('Error deleting expense:', error);
+        }
+    }
+
+    // 1. Fetches data (MODIFIED to fetch both expenses and budget)
+    async function fetchExpenses() {
+        let budgetLimit = 0;
+        try {
+            const [expensesResponse, budgetResponse] = await Promise.all([
+                fetch(API_URL),
+                fetch(BUDGET_API_URL) 
+            ]);
+            
+            const expenses = await expensesResponse.json();
+            const budgetData = await budgetResponse.json();
+
+            budgetLimit = parseFloat(budgetData.limit) || 0;
+            
+            renderExpenses(expenses, budgetLimit);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // 2. Renders expenses (MODIFIED to calculate remaining budget)
+    function renderExpenses(expenses, budgetLimit) {
+        const tableBody = document.getElementById("expenseTable").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = ''; 
+        let totalSpent = 0;
+
+        expenses.forEach(expense => {
+            const amount = parseFloat(expense.amount);
+            
+            const newRow = tableBody.insertRow();
+            const dateCell = newRow.insertCell(0);
+            const descCell = newRow.insertCell(1);
+            const amountCell = newRow.insertCell(2);
+            const actionCell = newRow.insertCell(3);
+
+            dateCell.textContent = expense.date;
+            descCell.textContent = expense.desc;
+            amountCell.textContent = amount.toFixed(2);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'delete-btn'; 
+            deleteBtn.onclick = () => deleteExpense(expense.id);
+            actionCell.appendChild(deleteBtn);
+
+            totalSpent += amount;
+        });
+
+        // Update the total spent
+        document.getElementById("totalAmount").textContent = totalSpent.toFixed(2);
+        
+        // NEW: Update Budget Display
+        const remaining = budgetLimit - totalSpent;
+        
+        document.getElementById("currentBudget").textContent = budgetLimit.toFixed(2);
+        document.getElementById("remainingBudget").textContent = remaining.toFixed(2);
+        
+        // Optional: Highlight if over budget
+        const remainingEl = document.getElementById("remainingBudget");
+        remainingEl.style.color = remaining < 0 ? '#dc3545' : '#28a745'; 
+    }
+
+    // 3. Handles adding a new expense (sends data to the backend)
+    async function addExpense() {
+        const dateInput = document.getElementById("date");
+        const descInput = document.getElementById("desc");
+        const amountInput = document.getElementById("amount");
+
+        const date = dateInput.value.trim();
+        const desc = descInput.value.trim();
+        const amount = parseFloat(amountInput.value);
+
+        if (!date || !desc || isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid date, description, and amount.");
+            return;
+        }
+
+        const newExpense = { date, desc, amount };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newExpense)
+            });
+
+            if (response.ok) {
+                fetchExpenses(); 
+                
+                // Clear inputs
+                dateInput.value = "";
+                descInput.value = "";
+                amountInput.value = "";
+            } else {
+                alert('Failed to save expense on the server.');
+            }
+        } catch (error) {
+            console.error('Error adding expense:', error);
+            alert('Could not connect to the backend to save data.');
+        }
+    }
+
+
+    // --- DARK MODE TOGGLE LOGIC ---
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    themeToggle.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+    });
+  </script>
+</body>
+</html>
