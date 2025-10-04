@@ -16,12 +16,14 @@ body {
 
 /* Container */
 .container {
-  max-width: 600px;
+  /* MODIFIED: Increased width for a true desktop/horizontal feel */
+  max-width: 900px; 
   margin: auto;
   background-color: #ffffff; /* Light mode container background */
   padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  /* MODIFIED: Softer, modern shadow */
+  border-radius: 12px; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
   /* Smooth transition for theme change */
   transition: background-color 0.3s, box-shadow 0.3s;
 }
@@ -41,33 +43,34 @@ h2 {
     padding: 15px;
     border-radius: 8px;
     text-align: center;
-    margin-bottom: 25px; /* Spacing below the banner */
+    margin-bottom: 25px; 
     transition: background-color 0.3s, border-color 0.3s;
 }
 
 #welcome-banner p {
     font-size: 1.1em;
     color: #495057;
-    margin: 0;
+    margin: 0; /* Ensures clean vertical spacing */
 }
 
 /* Toggle Button Style */
 #themeToggle {
   width: 100%;
   padding: 12px;
-  background-color: #007bff; /* Blue for the toggle button */
+  background-color: #007bff; 
   color: white;
   font-size: 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
-  margin-bottom: 20px; /* Space below the toggle */
-  transition: background-color 0.3s ease;
+  margin-bottom: 20px; 
+  transition: background-color 0.3s ease, transform 0.1s; /* Added transform */
 }
 
 #themeToggle:hover {
   background-color: #0056b3;
+  transform: scale(1.01); /* Subtle lift effect */
 }
 
 /* Inputs (Includes text, number, and date) */
@@ -75,9 +78,9 @@ input[type="text"],
 input[type="number"],
 input[type="date"] {
   width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  padding: 10px; /* Reduced for compactness */
+  margin-top: 5px; /* Reduced for compactness */
+  margin-bottom: 5px; /* Reduced for compactness */
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
@@ -85,8 +88,7 @@ input[type="date"] {
 }
 
 /* Button (Add Expense) */
-/* Exclude delete button and set budget button from 100% width override */
-button:not(#themeToggle, .delete-btn, #setBudgetBtn) { 
+button:not(#themeToggle, .delete-btn, #setBudgetBtn, #analysisBtn) { 
   width: 100%;
   padding: 12px;
   background-color: #28a745;
@@ -96,29 +98,31 @@ button:not(#themeToggle, .delete-btn, #setBudgetBtn) {
   border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s;
 }
 
-button:not(#themeToggle, .delete-btn, #setBudgetBtn):hover {
+button:not(#themeToggle, .delete-btn, #setBudgetBtn, #analysisBtn):hover {
   background-color: #218838;
+  transform: scale(1.01);
 }
 
 /* Delete Button Style */
 .delete-btn {
-  background-color: #dc3545; /* Red color */
+  background-color: #dc3545; 
   color: white;
   padding: 5px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: auto; /* Override 100% width */
+  width: auto; 
   margin: 0;
   font-size: 14px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s;
 }
 
 .delete-btn:hover {
   background-color: #c82333;
+  transform: scale(1.05);
 }
 
 /* Table */
@@ -141,17 +145,19 @@ th {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* --- Budget Display Styles (NEW) --- */
+/* --- Budget Display Styles (Card Effect) --- */
 .budget-info {
-    border: 1px solid #007bff;
-    padding: 10px 15px;
-    border-radius: 6px;
+    /* MODIFIED: Stronger border and added shadow for card effect */
+    border: 2px solid #007bff;
+    padding: 15px 20px; 
+    border-radius: 10px;
     margin-top: 15px;
     margin-bottom: 10px;
     font-size: 1.1em;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
 }
 
 .budget-info > div {
@@ -180,10 +186,42 @@ th {
     border-radius: 6px;
     cursor: pointer;
     width: 100%;
+    transition: background-color 0.3s ease, transform 0.1s;
 }
 
 #setBudgetBtn:hover {
     background-color: #0056b3;
+    transform: scale(1.01);
+}
+
+/* Analysis Button Style */
+#analysisBtn {
+    margin-top: 10px;
+    padding: 12px;
+    background-color: #ffc107; /* Yellow/Amber color */
+    color: #212529;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.1s;
+}
+
+#analysisBtn:hover {
+    background-color: #e0a800;
+    transform: scale(1.01);
+}
+
+/* --- CHART CONTAINER STYLES --- */
+#chart-container {
+    padding: 15px;
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    /* Fixed height for chart rendering space */
+    height: 400px; 
 }
 
 
@@ -191,19 +229,18 @@ th {
 /* DARK MODE STYLES              */
 /* -------------------------------------- */
 
-/* Apply this class to the <body> element */
 .dark-mode {
-  background-color: #121212; /* Dark background */
-  color: #e0e0e0; /* Light text color for the body */
+  background-color: #121212; 
+  color: #e0e0e0; 
 }
 
 .dark-mode .container {
-  background-color: #1e1e1e; /* Slightly lighter dark for container */
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  background-color: #1e1e1e; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .dark-mode h2 {
-  color: #ffffff; /* White text for header */
+  color: #ffffff; 
 }
 
 /* Dark Mode Welcome Banner Styles */
@@ -218,8 +255,8 @@ th {
 
 /* Dark Mode Budget Info */
 .dark-mode .budget-info {
-    border-color: #0056b3;
-    background-color: #1e1e1e;
+    border-color: #0099ff;
+    background-color: #1a1a1a;
 }
 
 /* Dark Mode Inputs */
@@ -240,6 +277,15 @@ th {
     background-color: #007bff;
 }
 
+/* Dark Mode Analysis Button */
+.dark-mode #analysisBtn {
+    background-color: #ff9800;
+}
+
+.dark-mode #analysisBtn:hover {
+    background-color: #e68900;
+}
+
 /* Dark Mode Delete Button Style */
 .dark-mode .delete-btn {
   background-color: #990000;
@@ -249,16 +295,109 @@ th {
   background-color: #cc0000;
 }
 
+.dark-mode #chart-container {
+    background: #252525;
+    box-shadow: 0 0 8px rgba(255,255,255,0.1);
+}
+
 .dark-mode th {
-  background-color: #333333; /* Dark table header background */
-  color: #ffffff; /* White text for table header */
+  background-color: #333333; 
+  color: #ffffff; 
   border-color: #444;
 }
 
 .dark-mode td {
-  border: 1px solid #444; /* Darker borders for cells */
+  border: 1px solid #444; 
 }
 
 .dark-mode .total {
-  color: #ffffff; /* White text for total */
+  color: #ffffff; 
+}
+
+/* --- WELCOME MODAL STYLES --- */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 100; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.85); 
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    color: #007bff;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+.modal-content input {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+.modal-content button {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    width: 100%;
+}
+
+/* Dark Mode Modal Styling */
+.dark-mode .modal-content {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+.dark-mode .modal-content h2 {
+    color: #0099ff;
+}
+.dark-mode .modal-content input {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+/* --- DESKTOP LAYOUT (Horizontal Input Group) --- */
+@media (min-width: 768px) {
+    /* New container for inputs */
+    .input-group {
+        display: flex;
+        gap: 10px; /* Space between inputs */
+        margin-bottom: 10px;
+    }
+
+    .input-group input {
+        /* Distribute space evenly among the three inputs */
+        width: calc(33.33% - 7px); 
+        margin: 0; /* Remove vertical margins from individual inputs */
+    }
+
+    /* Keep the 'Add Expense' button aligned tightly below the group */
+    button:not(#themeToggle, .delete-btn, #setBudgetBtn, #analysisBtn) {
+        margin-top: 0; 
+    }
 }
