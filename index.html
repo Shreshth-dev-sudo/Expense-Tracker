@@ -1,222 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Expense Tracker</title>
-  
-    <link rel="stylesheet" href="style.css">
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoSync Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h2>Your Personalized Expense Tracker</h2> 
-    
-    <div id="welcome-banner">
-        <p>This is your full-stack expense management system. Track spending and manage your finances with ease.</p>
-    </div>
-    
-    <button id="themeToggle">Toggle Dark Mode</button>
+  <!-- Welcome Modal -->
+  <div id="welcomeModal" class="modal">
+    <div class="modal-content glass">
+      <h2>Welcome to <span class="accent">EcoSync</span> 💰</h2>
+      <p>Let’s get started by knowing your name</p>
+      <input type="text" id="usernameInput" placeholder="Enter your name..." />
+      <button id="startBtn">Continue</button>
+    </div>
+  </div>
 
-        <input type="date" id="date" /> 
-    <input type="text" id="desc" placeholder="Description" />
-    <input type="number" id="amount" placeholder="Amount" />
-    <button onclick="addExpense()">Add Expense</button> 
-    
-    <table id="expenseTable">
-      <thead>
-        <tr>
-          <th>Date</th> 
-          <th>Description</th>
-          <th>Amount ($)</th>
-          <th>Action</th>         </tr>
-      </thead>
-      <tbody>
-              </tbody>
-    </table>
+  <!-- Main App -->
+  <div class="app-container" id="mainContainer" style="display:none;">
+    <header class="app-header glass">
+      <div>
+        <h1>EcoSync Expense Tracker</h1>
+        <p class="welcome-text">Welcome, <span id="usernameDisplay"></span> 👋</p>
+      </div>
+      <button id="themeToggle" class="toggle-btn">🌙</button>
+    </header>
 
-        <div class="budget-info">
-        <div>Budget: $<span id="currentBudget">0.00</span></div>
-        <div>Remaining: $<span id="remainingBudget">0.00</span></div>
-    </div>
-    
-    <div class="total">Total Spent: $<span id="totalAmount">0.00</span></div>
-    
-        <button id="setBudgetBtn" onclick="setBudget()">Set Budget</button> 
-  </div>
+    <section class="stats glass">
+      <div class="card">
+        <h3>Budget Limit</h3>
+        <p>₹<span id="budgetLimit">0</span></p>
+      </div>
+      <div class="card">
+        <h3>Total Spent</h3>
+        <p>₹<span id="totalSpent">0</span></p>
+      </div>
+    </section>
 
-  <script>
-    // --- API & RENDERING LOGIC ---
-    const API_URL = 'http://localhost:3000/api/expenses';
-    const BUDGET_API_URL = 'http://localhost:3000/api/budget'; // NEW CONSTANT
+    <div class="set-budget glass">
+      <input type="number" id="budgetInput" placeholder="Enter your budget..." />
+      <button id="setBudgetBtn">💡 Set Budget</button>
+    </div>
 
-    document.addEventListener('DOMContentLoaded', fetchExpenses);
+    <section class="expense-input glass">
+      <div class="input-group">
+        <input type="text" id="description" placeholder="Expense Description" />
+        <input type="number" id="amount" placeholder="Amount" />
+        <input type="date" id="date" />
+      </div>
+      <button id="addExpenseBtn">➕ Add Expense</button>
+    </section>
 
-    // --- NEW BUDGET FUNCTION (Invoked by the Set Budget button) ---
-    async function setBudget() {
-        const currentBudgetElement = document.getElementById("currentBudget");
-        const newLimit = prompt(`Enter your new budget limit (Current: $${currentBudgetElement.textContent}):`);
+    <section class="expense-list glass">
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Amount (₹)</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="expenseList"></tbody>
+      </table>
+    </section>
 
-        if (newLimit === null || newLimit.trim() === "") return;
-        
-        const limitAmount = parseFloat(newLimit);
+    <section class="chart-section glass">
+      <h3>Spending Analysis</h3>
+      <canvas id="expenseChart"></canvas>
+    </section>
+  </div>
 
-        if (isNaN(limitAmount) || limitAmount < 0) {
-            alert("Please enter a valid positive number for the budget.");
-            return;
-        }
-        
-        try {
-            const response = await fetch(BUDGET_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ limit: limitAmount })
-            });
-
-            if (response.ok) {
-                fetchExpenses(); // Re-fetch to update display
-            } else {
-                alert('Failed to save budget limit on the server.');
-            }
-
-        } catch (error) {
-            console.error('Error setting budget:', error);
-            alert('Could not connect to the backend to save budget.');
-        }
-    }
-    // -------------------------
-
-    // --- DELETE FUNCTION ---
-    async function deleteExpense(id) {
-        if (!confirm('Are you sure you want to delete this expense?')) {
-            return;
-        }
-        try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: 'DELETE'
-            });
-
-            if (response.ok) {
-                fetchExpenses(); 
-            } else {
-                alert('Failed to delete expense on the server.');
-            }
-        } catch (error) {
-            console.error('Error deleting expense:', error);
-        }
-    }
-
-    // 1. Fetches data (MODIFIED to fetch both expenses and budget)
-    async function fetchExpenses() {
-        let budgetLimit = 0;
-        try {
-            const [expensesResponse, budgetResponse] = await Promise.all([
-                fetch(API_URL),
-                fetch(BUDGET_API_URL) 
-            ]);
-            
-            const expenses = await expensesResponse.json();
-            const budgetData = await budgetResponse.json();
-
-            budgetLimit = parseFloat(budgetData.limit) || 0;
-            
-            renderExpenses(expenses, budgetLimit);
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-    // 2. Renders expenses (MODIFIED to calculate remaining budget)
-    function renderExpenses(expenses, budgetLimit) {
-        const tableBody = document.getElementById("expenseTable").getElementsByTagName("tbody")[0];
-        tableBody.innerHTML = ''; 
-        let totalSpent = 0;
-
-        expenses.forEach(expense => {
-            const amount = parseFloat(expense.amount);
-            
-            const newRow = tableBody.insertRow();
-            const dateCell = newRow.insertCell(0);
-            const descCell = newRow.insertCell(1);
-            const amountCell = newRow.insertCell(2);
-            const actionCell = newRow.insertCell(3);
-
-            dateCell.textContent = expense.date;
-            descCell.textContent = expense.desc;
-            amountCell.textContent = amount.toFixed(2);
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Delete';
-            deleteBtn.className = 'delete-btn'; 
-            deleteBtn.onclick = () => deleteExpense(expense.id);
-            actionCell.appendChild(deleteBtn);
-
-            totalSpent += amount;
-        });
-
-        // Update the total spent
-        document.getElementById("totalAmount").textContent = totalSpent.toFixed(2);
-        
-        // NEW: Update Budget Display
-        const remaining = budgetLimit - totalSpent;
-        
-        document.getElementById("currentBudget").textContent = budgetLimit.toFixed(2);
-        document.getElementById("remainingBudget").textContent = remaining.toFixed(2);
-        
-        // Optional: Highlight if over budget
-        const remainingEl = document.getElementById("remainingBudget");
-        remainingEl.style.color = remaining < 0 ? '#dc3545' : '#28a745'; 
-    }
-
-    // 3. Handles adding a new expense (sends data to the backend)
-    async function addExpense() {
-        const dateInput = document.getElementById("date");
-        const descInput = document.getElementById("desc");
-        const amountInput = document.getElementById("amount");
-
-        const date = dateInput.value.trim();
-        const desc = descInput.value.trim();
-        const amount = parseFloat(amountInput.value);
-
-        if (!date || !desc || isNaN(amount) || amount <= 0) {
-            alert("Please enter a valid date, description, and amount.");
-            return;
-        }
-
-        const newExpense = { date, desc, amount };
-
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newExpense)
-            });
-
-            if (response.ok) {
-                fetchExpenses(); 
-                
-                // Clear inputs
-                dateInput.value = "";
-                descInput.value = "";
-                amountInput.value = "";
-            } else {
-                alert('Failed to save expense on the server.');
-            }
-        } catch (error) {
-            console.error('Error adding expense:', error);
-            alert('Could not connect to the backend to save data.');
-        }
-    }
-
-
-    // --- DARK MODE TOGGLE LOGIC ---
-    const themeToggle = document.getElementById("themeToggle");
-    const body = document.body;
-
-    themeToggle.addEventListener("click", () => {
-        body.classList.toggle("dark-mode");
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
