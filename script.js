@@ -1,38 +1,3 @@
-// let total = 0;
-
-// function addExpense() {
-//   const descInput = document.getElementById("desc");
-//   const amountInput = document.getElementById("amount");
-
-//   const desc = descInput.value.trim();
-//   const amount = parseFloat(amountInput.value);
-
-//   if (!desc || isNaN(amount) || amount <= 0) {
-//     alert("Please enter a valid description and amount.");
-//     return;
-//   }
-
-//   const tableBody = document
-//     .getElementById("expenseTable")
-//     .getElementsByTagName("tbody")[0];
-
-//   const newRow = tableBody.insertRow();
-
-//   const descCell = newRow.insertCell(0);
-//   const amountCell = newRow.insertCell(1);
-
-//   descCell.textContent = desc;
-//   amountCell.textContent = amount.toFixed(2);
-
-//   total += amount;
-//   document.getElementById("totalAmount").textContent = total.toFixed(2);
-
-//   // Clear input fields
-//   descInput.value = "";
-//   amountInput.value = "";
-// }
-
-
 let total = 0;
 
 function addExpense() {
